@@ -224,17 +224,17 @@ static ComPtr<ID3DBlob> SerializeRootSignature(CompiledDxil::Metadata const& met
     CD3DX12_DESCRIPTOR_RANGE1 ViewRanges[4], SamplerRange;
     cl_uint NumRanges = 0;
     ViewRanges[NumRanges++].Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 2, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC_WHILE_SET_AT_EXECUTE, 0);
-    ViewRanges[NumRanges++].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, metadata.num_uavs, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_VOLATILE, 2);
+    ViewRanges[NumRanges++].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, (UINT)metadata.num_uavs, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_VOLATILE, 2);
     if (metadata.num_srvs)
     {
-        ViewRanges[NumRanges++].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, metadata.num_srvs, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC_WHILE_SET_AT_EXECUTE);
+        ViewRanges[NumRanges++].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, (UINT)metadata.num_srvs, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC_WHILE_SET_AT_EXECUTE);
     }
     cl_uint NumParameters = 0;
     Params[NumParameters++].InitAsDescriptorTable(NumRanges, ViewRanges);
     if (metadata.num_samplers)
     {
         // TODO: Static samplers
-        SamplerRange.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, metadata.num_samplers, 0);
+        SamplerRange.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, (UINT)metadata.num_samplers, 0);
         Params[NumParameters++].InitAsDescriptorTable(1, &SamplerRange);
     }
 
@@ -263,7 +263,7 @@ static ComPtr<ID3DBlob> SerializeRootSignature(CompiledDxil::Metadata const& met
     if (NumParameters == ARRAYSIZE(Params))
     {
         // Ran out of space for root descriptors, just reference these buffers via descriptor table
-        ViewRanges[NumRanges++].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, metadata.num_uavs, 0,
+        ViewRanges[NumRanges++].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, (UINT)metadata.num_uavs, 0,
                                      1, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_VOLATILE, 2);
         Params[0].DescriptorTable.NumDescriptorRanges++;
         NumParameters = 2;

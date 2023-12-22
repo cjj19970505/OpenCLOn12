@@ -14,7 +14,7 @@ inline ID3D12Resource* GetUnderlyingResource(Resource* pResource)
     return pResource->GetUnderlyingResource();
 }
 
-inline D3D12_GPU_VIRTUAL_ADDRESS GetBufferGPUVA(Resource *pBuffer, UINT APIOffset)
+inline D3D12_GPU_VIRTUAL_ADDRESS GetBufferGPUVA(Resource *pBuffer, SIZE_T APIOffset)
 {
     // TODO: Cache the GPU VA, frequent calls to this cause a CPU hotspot
     return pBuffer->GetUnderlyingResource()->GetGPUVirtualAddress() // Base of the DX12 resource
