@@ -1,0 +1,10 @@
+{
+    "cmake.configureOnEdit": false,
+    "cmake.configureOnOpen": false,
+    "cmake.configureSettings": {
+        "USE_PIX": false
+    },
+    "cmake.environment": {
+        "CL": "/wd4819"
+    }
+}

@@ -13,29 +13,14 @@ file(GLOB_RECURSE SRC CONFIGURE_DEPENDS src/*.cpp src/*.def)
 file(GLOB_RECURSE INC include/*.h include/*.hpp)
 file(GLOB_RECURSE EXTERNAL_INC external/*.h external/*.hpp)
 
-FetchContent_Declare(
-    d3d12translationlayer
-    GIT_REPOSITORY https://github.com/microsoft/D3D12TranslationLayer.git
-    GIT_TAG        e77b6a16a64dd584772f2b0123209cd3f96d81ce
-)
-FetchContent_MakeAvailable(d3d12translationlayer)
+add_subdirectory(D3D12TranslationLayer)
+add_subdirectory(OpenCL-Headers)
 
-FetchContent_Declare(
-    opencl_headers
-    GIT_REPOSITORY https://github.com/KhronosGroup/OpenCL-Headers.git
-    GIT_TAG 1bb9ec797d14abed6167e3a3d66ede25a702a5c7
-)
-FetchContent_MakeAvailable(opencl_headers)
 add_library(OpenCL::Headers ALIAS Headers)
 
 set(WIL_BUILD_PACKAGING OFF CACHE BOOL "" FORCE)
 set(WIL_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-FetchContent_Declare(
-    wil
-    GIT_REPOSITORY https://github.com/microsoft/wil.git
-    GIT_TAG ed429e64eb3b91848bf19c17e1431c1b0f2c6d2b
-)
-FetchContent_MakeAvailable(wil)
+add_subdirectory(wil)
 
 add_library(openclon12 SHARED ${SRC} ${INC} ${EXTERNAL_INC})
 target_include_directories(openclon12
