@@ -1,9 +1,9 @@
 [submodule "D3D12TranslationLayer"]
 	path = D3D12TranslationLayer
-	url = git@github.com:cjj19970505/D3D12TranslationLayer.git
+	url = ../D3D12TranslationLayer.git
 [submodule "OpenCL-Headers"]
 	path = OpenCL-Headers
-	url = https://github.com/KhronosGroup/OpenCL-Headers.git
+	url = ../../KhronosGroup/OpenCL-Headers.git
 [submodule "wil"]
 	path = wil
-	url = https://github.com/microsoft/wil.git
+	url = ../../microsoft/wil.git
