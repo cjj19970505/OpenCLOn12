@@ -142,7 +142,21 @@ Platform::Platform(cl_icd_dispatch* dispatch)
     {
         ComPtr<IDXCoreAdapter> spAdapter;
         THROW_IF_FAILED(m_spAdapters->GetAdapter(i, IID_PPV_ARGS(&spAdapter)));
-        m_Devices[i] = std::make_unique<Device>(*this, spAdapter.Get());
+        bool isGraphicSupported = spAdapter->IsAttributeSupported(DXCORE_ADAPTER_ATTRIBUTE_D3D12_GRAPHICS);
+        
+        if(!isGraphicSupported)
+        {
+            // prioritize compute-only device
+            for(cl_uint j = i; j > 0; --j)
+            {
+                m_Devices[j] = std::move(m_Devices[j-1]);
+            }
+            m_Devices[0] = std::make_unique<Device>(*this, spAdapter.Get());
+        }
+        else
+        {
+            m_Devices[i] = std::make_unique<Device>(*this, spAdapter.Get());
+        }
     }
 
     char *forceWarpStr = nullptr;

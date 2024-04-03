@@ -330,6 +330,16 @@ Device::Device(Platform& parent, IDXCoreAdapter* pAdapter)
     : CLChildBase(parent)
     , m_spAdapter(pAdapter)
 {
+    HRESULT hr = S_OK;
+#ifdef _DEBUG
+    ComPtr<ID3D12Debug> debugController;
+    hr = D3D12GetDebugInterface(IID_PPV_ARGS(&debugController));
+    if(SUCCEEDED(hr))
+    {
+        debugController->EnableDebugLayer();
+    }
+#endif
+
     pAdapter->GetProperty(DXCoreAdapterProperty::HardwareID, sizeof(m_HWIDs), &m_HWIDs);
 }
 
@@ -342,6 +352,7 @@ static ImmCtx::CreationArgs GetImmCtxCreationArgs()
     Args.RenamingIsMultithreaded = true;
     Args.UseResidencyManagement = true;
     Args.UseThreadpoolForPSOCreates = true;
+    Args.DisableGPUTimeout = true;
     Args.CreatorID = __uuidof(OpenCLOn12CreatorID);
     return Args;
 }
